@@ -74,22 +74,17 @@ class role_waarnemingcms (
     ensure               => present,
     server_name          => ['iobs.observation.org', 'support.observation.org', 'cms.example.com'],
     use_default_location => false,
-  }
-
-  nginx::resource::location { 'support_root':
-    ensure        => present,
-    server        => 'iobs.observation.org',
-    www_root      => $web_root,
-    location      => '~ \.php$',
-    fastcgi       => 'unix:/var/run/php/php7.0-fpm.sock',
-    fastcgi_index => 'index.php',
-  }
-
-  nginx::resource::location { 'clean_urs':
-    ensure    => present,
-    server    => 'iobs.observation.org',
-    location  => '/',
-    try_files => ['$uri $uri/ /index.php?$args'],
+    locations            =>
+      support_root => {
+        www_root      => $web_root,
+        location      => '~ \.php$',
+        fastcgi       => 'unix:/var/run/php/php7.0-fpm.sock',
+        fastcgi_index => 'index.php',
+      },
+      clean_urls => {
+        location  => '/',
+        try_files => ['$uri $uri/ /index.php?$args'],
+      },
   }
 
   # Download and unpack Joomla

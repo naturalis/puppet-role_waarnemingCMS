@@ -71,7 +71,7 @@ class role_waarnemingcms (
   }
 
   # Download and unpack Joomla
-  archive { '/home/support/www':
+  archive { 'Joomla_3.7.3-stable-full_package-tar-bz2':
     ensure        => present,
     extract       => true,
     extract_path  => '/home/support/www',

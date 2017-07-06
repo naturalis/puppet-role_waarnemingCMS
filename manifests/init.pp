@@ -101,7 +101,7 @@ class role_waarnemingcms (
   # Create Joomla configuration
   file { "${web_root}/configuration.php":
     content => template('role_waarnemingcms/configuration.php.erb'),
-    user    => $system_user,
+    owner   => $system_user,
     group   => $system_user,
     mode    => '0744',
   }

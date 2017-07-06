@@ -67,7 +67,9 @@ class role_waarnemingcms (
   class { 'memcached': }
 
   # Install webserver
-  class { 'nginx': }
+  class { 'nginx':
+    keepalive_timeout    => '60',
+  }
 
   # Configure VHOST
   nginx::resource::server { 'iobs.observation.org':
@@ -75,7 +77,6 @@ class role_waarnemingcms (
     server_name          => ['iobs.observation.org', 'support.observation.org', 'cms.example.com'],
     use_default_location => false,
     www_root             => $web_root,
-    keepalive_timeout    => '60',
     server_cfg_prepend   => {
       server_name_in_redirect => 'off',
     },

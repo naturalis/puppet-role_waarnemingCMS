@@ -63,6 +63,9 @@ class role_waarnemingcms (
     group       => $system_user,
   }
 
+  # Install memcached for caching and user sessions
+  class { 'memcached': }
+
   # Install webserver
   class { 'nginx': }
 

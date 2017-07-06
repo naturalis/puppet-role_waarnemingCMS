@@ -15,7 +15,7 @@ class role_waarnemingCMS (
   class { '::mysql::server':
     root_password =>  $mysql_root_password,
     remove_default_accounts =>  true,
-    override_options =>  $mysql_override_options
+    override_options =>  $mysql_override_options,
   }
 
   # Create database, db user and grant permissions
@@ -37,17 +37,17 @@ class role_waarnemingCMS (
 
   # Configure VHOST
   nginx::resource::server { 'iobs.observation.org':
-    ensure                => present,
-    www_root              => '/home/support/www',
-    index_files           => [ 'index.php' ],
+    ensure      => present,
+    www_root    => '/home/support/www',
+    index_files => [ 'index.php' ],
   }
 
   nginx::resource::location { 'support_root':
-    ensure          => present,
-    server           => 'iobs.observation.org',
-    location        => '~ \.php$',
-    fastcgi         => 'unix:/var/run/php/php7.0-fpm.sock',
-    fastcgi_index   => ['index.php'],
-    include         => ['fastcgi_params'],
+    ensure         => present,
+    server         => 'iobs.observation.org',
+    location       => '~ \.php$',
+    fastcgi        => 'unix:/var/run/php/php7.0-fpm.sock',
+    fastcgi_index  => ['index.php'],
+    fastcgi_params => ['fastcgi_params'],
   }
 }

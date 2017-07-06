@@ -86,6 +86,13 @@ class role_waarnemingcms (
     fastcgi_index => 'index.php',
   }
 
+  nginx::resource::location { 'clean_urs':
+    ensure    => present,
+    server    => 'iobs.observation.org',
+    location  => '/',
+    try_files => '$uri $uri/ /index.php?$args',
+  }
+
   # Download and unpack Joomla
   archive { '/tmp/Joomla_3.7.3-Stable-Full_Package.tar.gz':
     ensure        => present,
@@ -106,6 +113,6 @@ class role_waarnemingcms (
     content => template('role_waarnemingcms/configuration.php.erb'),
     owner   => $system_user,
     group   => $system_user,
-    mode    => '0744',
+    mode    => '0644',
   }
 }

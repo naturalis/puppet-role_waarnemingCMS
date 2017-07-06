@@ -2,7 +2,7 @@
 #
 # This role creates the necessary configuration for the support.observation.org webservice.
 #
-class role_waarnemingCMS (
+class role_waarnemingcms (
   $mysql_root_password = 'password',
   $mysql_override_options = {
   },

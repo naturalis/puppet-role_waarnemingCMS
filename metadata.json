@@ -6,7 +6,7 @@
   "license": "Apache 2.0",
   "source": "https://github.com/naturalis/puppet-role_waarnemingCMS",
   "project_page": "https://github.com/naturalis/puppet-role_waarnemingCMS",
-  "issues_url": "https://github.com/naturalis/puppet-role_waarneming/issues",
+  "issues_url": "https://github.com/naturalis/puppet-role_waarnemingCMS/issues",
   "tags": ["waarneming.nl", "observation.org", "nginx", "php", "fpm", "joomla", "mysql"],
   "operatingsystem_support": [{
     "operatingsystem": "Ubuntu",

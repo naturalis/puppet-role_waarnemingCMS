@@ -1,4 +1,5 @@
 # == Class: role_waarnemingCMS
+        www_root    => undef,
 #
 # This role creates the necessary configuration for the support.observation.org webservice.
 #
@@ -129,6 +130,13 @@ class role_waarnemingcms (
     user          => $system_user,
     group         => $system_user,
     require       => File[$web_root],
+  }
+
+  # Remove installation directory
+  file { "${web_root}/installation":
+    ensure  => absent,
+    recurse => true,
+    require => Archive['/tmp/Joomla_3.7.3-Stable-Full_Package.tar.gz'],
   }
 
   # Create Joomla configuration

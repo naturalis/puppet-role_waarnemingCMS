@@ -71,10 +71,9 @@ class role_waarnemingcms (
 
   # Configure VHOST
   nginx::resource::server { 'iobs.observation.org':
-    ensure      => present,
-    server_name => ['iobs.observation.org', 'support.observation.org', 'cms.example.com'],
-    www_root    => $web_root,
-    index_files => [ 'index.php' ],
+    ensure               => present,
+    server_name          => ['iobs.observation.org', 'support.observation.org', 'cms.example.com'],
+    use_default_location => false,
   }
 
   nginx::resource::location { 'support_root':

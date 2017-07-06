@@ -83,7 +83,6 @@ class role_waarnemingcms (
     locations            => {
       support_root => {
         location      => '~ \.php$',
-        www_root      => $web_root,
         fastcgi       => 'unix:/var/run/php/php7.0-fpm.sock',
         fastcgi_index => 'index.php',
       },

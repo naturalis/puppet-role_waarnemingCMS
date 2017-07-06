@@ -106,13 +106,11 @@ class role_waarnemingcms (
       long_cache   => {
         location    => '~* \.(ico|pdf|flv)$',
         expires     => '1y',
-        www_root    => undef,
         index_files => undef,
       },
       short_cache  => {
         location    => '~* \.(js|css|png|jpg|jpeg|gif|swf|xml|txt)$',
         expires     => '14d',
-        www_root    => undef,
         index_files => undef,
       },
     }

@@ -90,7 +90,7 @@ class role_waarnemingcms (
     ensure    => present,
     server    => 'iobs.observation.org',
     location  => '/',
-    try_files => '$uri $uri/ /index.php?$args',
+    try_files => ['$uri $uri/ /index.php?$args'],
   }
 
   # Download and unpack Joomla

@@ -135,6 +135,7 @@ class role_waarnemingcms (
   file { "${web_root}/installation":
     ensure  => absent,
     recurse => true,
+    force   => true,
     require => Archive['/tmp/Joomla_3.7.3-Stable-Full_Package.tar.gz'],
   }
 

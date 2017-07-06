@@ -40,7 +40,8 @@ class role_waarnemingcms (
       mysql  => {},
       mcrypt => {},
       xml    => {},
-	}
+    },
+  }
 
   # Configure FPM pools
   php::fpm::pool { 'joomla':

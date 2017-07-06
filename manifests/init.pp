@@ -69,4 +69,19 @@ class role_waarnemingcms (
     fastcgi        => 'unix:/var/run/php/php7.0-fpm.sock',
     fastcgi_index  => 'index.php',
   }
+
+  # Download and unpack Joomla
+  archive { '/home/support/www':
+    ensure        => present,
+    extract       => true,
+    extract_path  => '/home/support/www',
+    source        => 'https://downloads.joomla.org/cms/joomla3/3-7-3/Joomla_3.7.3-stable-full_package-tar-bz2',
+    checksum      => '5afc459baec7507ed86144838e99c4407a34447f',
+    checksum_type => 'sha1',
+    creates       => '/home/support/www/index.php',
+    cleanup       => true,
+    user          => 'support',
+    group         => 'support',
+  }
+
 }

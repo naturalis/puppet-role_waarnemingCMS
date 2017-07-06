@@ -85,10 +85,14 @@ class role_waarnemingcms (
         location      => '~ \.php$',
         fastcgi       => 'unix:/var/run/php/php7.0-fpm.sock',
         fastcgi_index => 'index.php',
+        www_root      => undef,
+        index_files   => undef,
       },
       clean_urls   => {
-        location  => '/',
-        try_files => ['$uri $uri/ /index.php?$args'],
+        location    => '/',
+        try_files   => ['$uri $uri/ /index.php?$args'],
+        www_root    => undef,
+        index_files => undef,
       },
       deny_scripts => {
         location            => '~* /(images|cache|media|logs|tmp)/.*\.(php|pl|py|jsp|asp|sh|cgi)$',
@@ -96,14 +100,20 @@ class role_waarnemingcms (
           return     => '403',
           error_page => '403 /403_error.html',
         },
+        www_root            => undef,
+        index_files         => undef,
       },
       long_cache   => {
-        location => '~* \.(ico|pdf|flv)$',
-        expires  => '1y',
+        location    => '~* \.(ico|pdf|flv)$',
+        expires     => '1y',
+        www_root    => undef,
+        index_files => undef,
       },
       short_cache  => {
-        location => '~* \.(js|css|png|jpg|jpeg|gif|swf|xml|txt)$',
-        expires  => '14d',
+        location    => '~* \.(js|css|png|jpg|jpeg|gif|swf|xml|txt)$',
+        expires     => '14d',
+        www_root    => undef,
+        index_files => undef,
       },
     }
   }

@@ -48,6 +48,6 @@ class role_waarnemingcms (
     location       => '~ \.php$',
     fastcgi        => 'unix:/var/run/php/php7.0-fpm.sock',
     fastcgi_index  => ['index.php'],
-    fastcgi_params => ['fastcgi_params'],
+    fastcgi_params => 'fastcgi_params',
   }
 }

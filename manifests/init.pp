@@ -6,10 +6,15 @@ class role_waarnemingcms (
   $mysql_root_password = 'password',
   $mysql_override_options = {
   },
+  $system_user = 'support',
+  $web_root = "/home/${system_user}/www",
   $dbuser = 'user',
   $dbpass = 'password',
   $dbname = 'joomla',
+  $dbpref = 'sup_',
   $dbhost = 'localhost',
+  $joomla_secret = undef,
+  $joomla_mailfrom = undef,
 ) {
   # Install database
   class { '::mysql::server':
@@ -27,16 +32,16 @@ class role_waarnemingcms (
   }
 
   # Create support forum user
-  user { 'support':
+  user { $system_user:
     ensure     => present,
     managehome => true,
   }
 
   # Create forum dir
-  file { '/home/support/www':
+  file { $web_root:
     ensure => directory,
-    owner  => 'support',
-    group  => 'support',
+    owner  => $system_user,
+    group  => $system_user,
   }
 
   # Install PHP with FPM
@@ -54,8 +59,8 @@ class role_waarnemingcms (
   php::fpm::pool { 'joomla':
     listen      => '/run/php/php7.0-fpm.sock',
     listen_mode => '0666',
-    user        => 'support',
-    group       => 'support',
+    user        => $system_user,
+    group       => $system_user,
   }
 
   # Install webserver
@@ -65,14 +70,14 @@ class role_waarnemingcms (
   nginx::resource::server { 'iobs.observation.org':
     ensure      => present,
     server_name => ['iobs.observation.org', 'support.observation.org', 'cms.example.com'],
-    www_root    => '/home/support/www',
+    www_root    => $web_root,
     index_files => [ 'index.php' ],
   }
 
   nginx::resource::location { 'support_root':
     ensure        => present,
     server        => 'iobs.observation.org',
-    www_root      => '/home/support/www',
+    www_root      => $web_root,
     location      => '~ \.php$',
     fastcgi       => 'unix:/var/run/php/php7.0-fpm.sock',
     fastcgi_index => 'index.php',
@@ -82,14 +87,22 @@ class role_waarnemingcms (
   archive { '/tmp/Joomla_3.7.3-Stable-Full_Package.tar.gz':
     ensure        => present,
     extract       => true,
-    extract_path  => '/home/support/www',
+    extract_path  => $web_root,
     source        => 'https://downloads.joomla.org/cms/joomla3/3-7-3/Joomla_3.7.3-Stable-Full_Package.tar.gz',
     checksum      => 'e74a6cfd28e285b23fb3ba117e92c5042c46b804',
     checksum_type => 'sha1',
-    creates       => '/home/support/www/index.php',
+    creates       => "${web_root}/index.php",
     cleanup       => true,
-    user          => 'support',
-    group         => 'support',
-    require       => File['/home/support/www'],
+    user          => $system_user,
+    group         => $system_user,
+    require       => File[$web_root],
+  }
+
+  # Create Joomla configuration
+  file { "${web_root}/configuration.php":
+    content => template('role_waarnemingcms/configuration.php.erb'),
+    user    => $system_user,
+    group   => $system_user,
+    mode    => '0744',
   }
 }

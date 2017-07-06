@@ -74,7 +74,7 @@ class role_waarnemingcms (
     ensure               => present,
     server_name          => ['iobs.observation.org', 'support.observation.org', 'cms.example.com'],
     use_default_location => false,
-    locations            =>
+    locations            => {
       support_root => {
         www_root      => $web_root,
         location      => '~ \.php$',
@@ -85,6 +85,7 @@ class role_waarnemingcms (
         location  => '/',
         try_files => ['$uri $uri/ /index.php?$args'],
       },
+    }
   }
 
   # Download and unpack Joomla

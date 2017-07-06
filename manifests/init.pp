@@ -5,11 +5,11 @@
 class role_waarnemingCMS (
   $mysql_root_password = 'password',
   $mysql_override_options = {
+  },
   $dbuser = 'user',
   $dbpass = 'password',
   $dbname = 'joomla',
   $dbhost = 'localhost',
-  },
 ) {
   # Install database
   class { '::mysql::server':

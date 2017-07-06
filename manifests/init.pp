@@ -32,6 +32,13 @@ class role_waarnemingcms (
     managehome => true,
   }
 
+  # Create forum dir
+  file { '/home/support/www':
+    ensure => directory,
+    owner  => 'support',
+    group  => 'support',
+  }
+
   # Install PHP with FPM
   class { '::php':
     ensure     => present,
@@ -82,6 +89,6 @@ class role_waarnemingcms (
     cleanup       => true,
     user          => 'support',
     group         => 'support',
+    require       => File['/home/support/www'],
   }
-
 }

@@ -75,19 +75,35 @@ class role_waarnemingcms (
     server_name          => ['iobs.observation.org', 'support.observation.org', 'cms.example.com'],
     use_default_location => false,
     www_root             => $web_root,
+    keepalive_timeout    => '60',
     server_cfg_prepend   => {
       server_name_in_redirect => 'off',
     },
     locations            => {
       support_root => {
-        www_root      => $web_root,
         location      => '~ \.php$',
+        www_root      => $web_root,
         fastcgi       => 'unix:/var/run/php/php7.0-fpm.sock',
         fastcgi_index => 'index.php',
       },
-      clean_urls => {
+      clean_urls   => {
         location  => '/',
         try_files => ['$uri $uri/ /index.php?$args'],
+      },
+      deny_scripts => {
+        location            => '~* /(images|cache|media|logs|tmp)/.*\.(php|pl|py|jsp|asp|sh|cgi)$',
+        location_custom_cfg => {
+          return     => '403',
+          error_page => '403 /403_error.html',
+        },
+      },
+      long_cache   => {
+        location => '~* \.(ico|pdf|flv)$',
+        expires  => '1y',
+      },
+      short_cache  => {
+        location => '~* \.(js|css|png|jpg|jpeg|gif|swf|xml|txt)$',
+        expires  => '14d',
       },
     }
   }

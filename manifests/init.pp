@@ -32,6 +32,23 @@ class role_waarnemingcms (
     managehome => true,
   }
 
+  # Install PHP with FPM
+  class { '::php':
+    ensure     => present,
+    fpm        => true,
+    extensions => {
+      mysql  => {},
+      mcrypt => {},
+      xml    => {},
+	}
+
+  # Configure FPM pools
+  php::fpm::pool { 'joomla':
+    listen => '/run/php/php7.0-fpm.sock',
+    user   => 'support',
+    group  => 'support',
+  }
+
   # Install webserver
   class { 'nginx': }
 

@@ -70,11 +70,12 @@ class role_waarnemingcms (
   }
 
   nginx::resource::location { 'support_root':
-    ensure         => present,
-    server         => 'iobs.observation.org',
-    location       => '~ \.php$',
-    fastcgi        => 'unix:/var/run/php/php7.0-fpm.sock',
-    fastcgi_index  => 'index.php',
+    ensure        => present,
+    server        => 'iobs.observation.org',
+    www_root      => '/home/support/www',
+    location      => '~ \.php$',
+    fastcgi       => 'unix:/var/run/php/php7.0-fpm.sock',
+    fastcgi_index => 'index.php',
   }
 
   # Download and unpack Joomla

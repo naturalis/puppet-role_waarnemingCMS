@@ -71,12 +71,12 @@ class role_waarnemingcms (
   }
 
   # Download and unpack Joomla
-  archive { '/tmp/Joomla_3.7.3-stable-full_package-tar-bz2':
+  archive { '/tmp/Joomla_3.7.3-Stable-Full_Package.tar.gz':
     ensure        => present,
     extract       => true,
     extract_path  => '/home/support/www',
-    source        => 'https://downloads.joomla.org/cms/joomla3/3-7-3/Joomla_3.7.3-stable-full_package-tar-bz2',
-    checksum      => '5afc459baec7507ed86144838e99c4407a34447f',
+    source        => 'https://downloads.joomla.org/cms/joomla3/3-7-3/Joomla_3.7.3-Stable-Full_Package.tar.gz',
+    checksum      => 'e74a6cfd28e285b23fb3ba117e92c5042c46b804',
     checksum_type => 'sha1',
     creates       => '/home/support/www/index.php',
     cleanup       => true,

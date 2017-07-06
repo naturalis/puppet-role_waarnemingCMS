@@ -1,5 +1,4 @@
 # == Class: role_waarnemingCMS
-        www_root    => undef,
 #
 # This role creates the necessary configuration for the support.observation.org webservice.
 #

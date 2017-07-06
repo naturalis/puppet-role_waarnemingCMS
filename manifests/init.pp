@@ -46,8 +46,8 @@ class role_waarnemingcms (
     ensure         => present,
     server         => 'iobs.observation.org',
     location       => '~ \.php$',
+    includ         => ['fastcgi_params'],
     fastcgi        => 'unix:/var/run/php/php7.0-fpm.sock',
     fastcgi_index  => 'index.php',
-    fastcgi_params => 'fastcgi_params',
   }
 }

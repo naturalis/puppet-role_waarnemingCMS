@@ -110,4 +110,10 @@ class role_waarnemingcms (
     group   => $system_user,
     mode    => '0644',
   }
+
+  # Place site specific images
+  file {
+    "${web_root}/images/iObs-icon-vectortitle-RGB-h-180x60.png": source => 'puppet:///modules/role_waarnemingcms/iObs-icon-vectortitle-RGB-h-180x60.png';
+    "${web_root}/templates/protostar/favicon.ico": source               => 'puppet:///modules/role_waarnemingcms/favicon.ico';
+  }
 }

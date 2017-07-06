@@ -74,6 +74,7 @@ class role_waarnemingcms (
     ensure               => present,
     server_name          => ['iobs.observation.org', 'support.observation.org', 'cms.example.com'],
     use_default_location => false,
+    www_root             => $web_root,
     locations            => {
       support_root => {
         www_root      => $web_root,

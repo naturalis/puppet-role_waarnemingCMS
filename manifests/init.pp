@@ -52,9 +52,10 @@ class role_waarnemingcms (
 
   # Configure FPM pools
   php::fpm::pool { 'joomla':
-    listen => '/run/php/php7.0-fpm.sock',
-    user   => 'support',
-    group  => 'support',
+    listen      => '/run/php/php7.0-fpm.sock',
+    listen_mode => '0666',
+    user        => 'support',
+    group       => 'support',
   }
 
   # Install webserver

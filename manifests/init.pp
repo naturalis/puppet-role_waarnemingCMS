@@ -1,18 +1,20 @@
-# == Class: role_waarnemingCMS
+# == Class: role_waarnemingcms
 #
 # This role creates the necessary configuration for the support.observation.org webservice.
 #
 class role_waarnemingcms (
-  $mysql_root_password = 'password',
+  $mysql_root_password = undef,
   $mysql_override_options = {
   },
   $system_user = 'support',
   $web_root = "/home/${system_user}/www",
-  $dbuser = 'user',
-  $dbpass = 'password',
+  $dbuser = undef,
+  $dbpass = undef,
   $dbname = 'joomla',
   $dbpref = 'sup_',
   $dbhost = 'localhost',
+  $joomla_version = '3.7.3',
+  $joomla_checksum = 'e74a6cfd28e285b23fb3ba117e92c5042c46b804',
   $joomla_secret = undef,
   $joomla_mailfrom = undef,
 ) {
@@ -68,13 +70,13 @@ class role_waarnemingcms (
 
   # Install webserver
   class { 'nginx':
-    keepalive_timeout    => '60',
+    keepalive_timeout => '60',
   }
 
   # Configure VHOST
-  nginx::resource::server { 'iobs.observation.org':
+  nginx::resource::server { 'joomla':
     ensure               => present,
-    server_name          => ['iobs.observation.org', 'support.observation.org', 'cms.example.com'],
+    server_name          => ['iobs.observation.org', 'support.observation.org'],
     use_default_location => false,
     www_root             => $web_root,
     server_cfg_prepend   => {
@@ -117,12 +119,15 @@ class role_waarnemingcms (
   }
 
   # Download and unpack Joomla
-  archive { '/tmp/Joomla_3.7.3-Stable-Full_Package.tar.gz':
+  $joomla_version_dashed = regsubst($joomla_version,'\.', '-', 'G')
+  $joomla_version_major = split($joomla_version, '\.')[0]
+
+  archive { "/tmp/Joomla_${joomla_version}-Stable-Full_Package.tar.gz":
     ensure        => present,
     extract       => true,
     extract_path  => $web_root,
-    source        => 'https://downloads.joomla.org/cms/joomla3/3-7-3/Joomla_3.7.3-Stable-Full_Package.tar.gz',
-    checksum      => 'e74a6cfd28e285b23fb3ba117e92c5042c46b804',
+    source        => "https://downloads.joomla.org/cms/joomla${joomla_version_major}/${joomla_version_dashed}/Joomla_${joomla_version}-Stable-Full_Package.tar.gz",
+    checksum      => $joomla_checksum,
     checksum_type => 'sha1',
     creates       => "${web_root}/index.php",
     cleanup       => true,
@@ -136,7 +141,7 @@ class role_waarnemingcms (
     ensure  => absent,
     recurse => true,
     force   => true,
-    require => Archive['/tmp/Joomla_3.7.3-Stable-Full_Package.tar.gz'],
+    require => Archive["/tmp/Joomla_${joomla_version}-Stable-Full_Package.tar.gz"],
   }
 
   # Create Joomla configuration

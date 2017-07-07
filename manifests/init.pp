@@ -58,16 +58,16 @@ class role_waarnemingcms (
   }
 
   # Configure FPM pools
-  php::fpm::pool { 'joomla':
-    listen      => '/run/php/php7.0-fpm.sock',
-    listen_mode => '0666',
-    user        => $system_user,
-    group       => $system_user,
-  }
-
-  # Delete FPM default pool
-  php::fpm::pool { 'www':
-    ensure => absent,
+  class { '::php::fpm::pools':
+    joomla => {
+      listen      => '/run/php/php7.0-fpm.sock',
+      listen_mode => '0666',
+      user        => $system_user,
+      group       => $system_user,
+    },
+    www => {
+      ensure => absent,
+    },
   }
 
   # Install memcached for caching and user sessions

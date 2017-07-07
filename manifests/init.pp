@@ -55,18 +55,13 @@ class role_waarnemingcms (
       mcrypt => {},
       xml    => {},
     },
-  }
-
-  # Configure FPM pools
-  class { '::php::fpm::pools':
-    joomla => {
-      listen      => '/run/php/php7.0-fpm.sock',
-      listen_mode => '0666',
-      user        => $system_user,
-      group       => $system_user,
-    },
-    www => {
-      ensure => absent,
+    fpm_pools => {
+      joomla => {
+        listen      => '/run/php/php7.0-fpm.sock',
+        listen_mode => '0666',
+        user        => $system_user,
+        group       => $system_user,
+      },
     },
   }
 

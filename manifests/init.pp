@@ -65,6 +65,11 @@ class role_waarnemingcms (
     group       => $system_user,
   }
 
+  # Delete FPM default pool
+  php::fpm::pool { 'www':
+    ensure => absent,
+  }
+
   # Install memcached for caching and user sessions
   class { 'memcached': }
 

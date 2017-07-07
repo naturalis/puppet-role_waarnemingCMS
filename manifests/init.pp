@@ -8,6 +8,7 @@ class role_waarnemingcms (
   },
   $system_user = 'support',
   $web_root = "/home/${system_user}/www",
+  $server_name = ['iobs.observation.org', 'support.observation.org'],
   $dbuser = undef,
   $dbpass = undef,
   $dbname = 'joomla',
@@ -76,7 +77,7 @@ class role_waarnemingcms (
   # Configure VHOST
   nginx::resource::server { 'joomla':
     ensure               => present,
-    server_name          => ['iobs.observation.org', 'support.observation.org'],
+    server_name          => $server_name,
     use_default_location => false,
     www_root             => $web_root,
     server_cfg_prepend   => {

@@ -63,9 +63,9 @@ class role_waarnemingcms (
         user        => $system_user,
         group       => $system_user,
       },
-    },
-    www        => {
-      ensure => absent,
+      www    => {
+        ensure => absent,
+      },
     },
   }
 

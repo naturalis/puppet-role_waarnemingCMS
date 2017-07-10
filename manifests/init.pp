@@ -54,7 +54,6 @@ class role_waarnemingcms (
     extensions => {
       mysql  => {},
       mcrypt => {},
-      xml    => {},
     },
     fpm_pools  => {
       www    => {

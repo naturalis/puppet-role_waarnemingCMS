@@ -7,6 +7,7 @@ class role_waarnemingcms (
   $mysql_override_options = {
   },
   $system_user = 'support',
+  $defaults = { require => Package['nginx'] },
   $web_root = "/home/${system_user}/www",
   $server_name = ['iobs.observation.org', 'support.observation.org'],
   $dbuser = undef,
@@ -14,11 +15,21 @@ class role_waarnemingcms (
   $dbname = 'joomla',
   $dbpref = 'sup_',
   $dbhost = 'localhost',
-  $joomla_version = '3.7.3',
+  $joomla_version = '3.8.0',
   $joomla_checksum = 'e74a6cfd28e285b23fb3ba117e92c5042c46b804',
   $joomla_secret = undef,
   $joomla_mailfrom = undef,
 ) {
+
+  # Defaults for all file resources
+  File {
+    ensure => present,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+    notify => Service['nginx'],
+  }
+
   # Install database
   class { '::mysql::server':
     root_password =>  $mysql_root_password,
@@ -76,12 +87,21 @@ class role_waarnemingcms (
     keepalive_timeout => '60',
   }
 
+  file { '/etc/nginx/ssl':
+    ensure  => directory,
+    require => Package['nginx'],
+  }
+
   # Configure VHOST
   nginx::resource::server { 'joomla':
     ensure               => present,
     server_name          => $server_name,
     use_default_location => false,
     www_root             => $web_root,
+    ssl                  => true,
+    ssl_cert             => '/etc/letsencrypt/live/support.observation.org/fullchain.pem',
+    ssl_key              => '/etc/letsencrypt/live/support.observation.org/privkey.pem',
+    ssl_redirect         => true,
     server_cfg_prepend   => {
       server_name_in_redirect => 'off',
     },
@@ -118,7 +138,8 @@ class role_waarnemingcms (
         expires     => '14d',
         index_files => undef,
       },
-    }
+    },
+#    require              => [ File['/etc/nginx/ssl/observation_org-chained.crt'], File['/etc/nginx/ssl/observation_org.key'] ],
   }
 
   # Download and unpack Joomla
@@ -161,4 +182,19 @@ class role_waarnemingcms (
     "${web_root}/templates/protostar/favicon.ico": source => 'puppet:///modules/role_waarnemingcms/favicon.ico';
     "${web_root}/images/iobs": ensure => directory, source => 'puppet:///modules/role_waarnemingcms/iobs', recurse => true;
   }
+
+  # Create SMF version checker for sensu
+  file { "/usr/local/sbin/chkjoomlaversion.sh":
+    content => template('role_waarnemingcms/chkjoomlaversion.erb'),
+    mode    => '0755',
+  }
+
+  # export check so sensu monitoring can make use of it
+  @@sensu::check { 'Check Joomla version' :
+    command     => '/usr/local/sbin/chkjoomlaversion.sh',
+    handlers    => 'default',
+    tag         => 'central_sensu',
+  }
+
+
 }

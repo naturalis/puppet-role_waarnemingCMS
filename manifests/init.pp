@@ -179,8 +179,14 @@ class role_waarnemingcms (
   # Place site specific images
   file {
     "${web_root}/images/iObs-icon-vectortitle-RGB-h-180x60.png": source => 'puppet:///modules/role_waarnemingcms/iObs-icon-vectortitle-RGB-h-180x60.png';
-    "${web_root}/templates/protostar/favicon.ico": source => 'puppet:///modules/role_waarnemingcms/favicon.ico';
     "${web_root}/images/iobs": ensure => directory, source => 'puppet:///modules/role_waarnemingcms/iobs', recurse => true;
+  }
+
+  file { "${web_root}/templates/protostar/favicon.ico":
+    source => 'puppet:///modules/role_waarnemingcms/favicon.ico',
+    owner   => 'www-data',
+    group   => 'www-data',
+    mode    => '0666',
   }
 
   # Create SMF version checker for sensu

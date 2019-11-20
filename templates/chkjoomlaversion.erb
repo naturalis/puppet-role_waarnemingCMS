@@ -10,7 +10,7 @@
 
 localversion=`cat <%= @web_root -%>/administrator/manifests/files/joomla.xml | grep '<version>' |  awk -F"<|>" '{print $3}'`
 remoteversion=`curl -s https://downloads.joomla.org/latest | grep 'Full Package (.zip)' | awk -F" " '{print $2}'`
-if [ "$localversion" = "" ]
+if [ -z "$remoteversion" ]
   then
     echo "OK: Joomla! can't check version which happens often, nothing to worry about."
     exit 0
